@@ -1,9 +1,9 @@
 # Define an Azure Virtual Machine resource.
 resource "azurerm_virtual_machine" "vm" {
   name                  = "helloworld-vm"  # Name of the Virtual Machine.
-  location              = azurerm_resource_group.rsc_grp.location  # Location where the VM will be created.
-  resource_group_name   = azurerm_resource_group.rsc_grp.name  # Name of the Azure Resource Group.
-  network_interface_ids = [azurerm_network_interface.nic.id]  # IDs of attached network interfaces.
+  location              = var.location  # Location where the VM will be created.
+  resource_group_name   = var.resource_group_name  # Name of the Azure Resource Group.
+  network_interface_ids = var.network_interface_ids  # IDs of attached network interfaces.
   vm_size               = "Standard_DS2_v2"  # Virtual machine size.
 
   # Define the OS disk configuration.
@@ -40,7 +40,7 @@ resource "azurerm_virtual_machine" "vm" {
   # Configure the user-assigned managed identity for the VM.
   identity {
     type         = "UserAssigned"  # Type of identity (UserAssigned).
-    identity_ids = [azurerm_user_assigned_identity.vm_identity.id]  # ID of the user-assigned identity.
+    identity_ids = [var.identity_ids]  # ID of the user-assigned identity.
   }
 
   # Provisioner block for executing remote commands on the VM.
@@ -56,7 +56,7 @@ resource "azurerm_virtual_machine" "vm" {
 
     # SSH connection details to the VM.
     connection {
-      host     = azurerm_public_ip.public_ip.ip_address  # Public IP address of the VM.
+      host     = var.host  # Public IP address of the VM.
       type     = "ssh"                                   # SSH connection type.
       user     = "adminuser"                             # SSH username.
       password = "Password1234!"                         # SSH password (please consider using SSH keys for production).
