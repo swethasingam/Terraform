@@ -7,6 +7,11 @@ variable "location" {
   default = "eastus"
 }
 
+variable "storage_account_name" {
+  description = "Name of the Azure storage_account_name"
+  type = string
+}
+
 variable "storage_account_id" {
   description = "Name of the Azure storage_account_id"
 }

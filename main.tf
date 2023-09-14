@@ -15,6 +15,22 @@ module "key_vault" {
   keyvault_key_name   = var.keyvault_key_name
 }
 
+module "storage_account" {
+  source              = "./storage_account"
+  storage_account_name = var.storage_account_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  storage_account_id  = var.storage_account_id
+  key_vault_id        = var.key_vault_id
+  keyvault_key_name   = var.keyvault_key_name
+}
+
+module "blob_container" {
+  source               = "./blob_container"
+  storage_account_name = module.storage_account.storage_account_name
+  container_name       = var.container_name
+}
+
 module "virtual_network" {
   source               = "./virtual_network"
   resource_group_name  = var.resource_group_name
@@ -64,21 +80,6 @@ module "role_assignment" {
   source             = "./role_assignment"
   storage_account_id = var.storage_account_id
   principal_id       = var.principal_id
-}
-
-module "storage_account" {
-  source              = "./storage_account"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  storage_account_id  = var.storage_account_id
-  key_vault_id        = var.key_vault_id
-  keyvault_key_name   = var.keyvault_key_name
-}
-
-module "blob_container" {
-  source               = "./blob_container"
-  storage_account_name = module.storage_account.storage_account_name
-  container_name       = var.container_name
 }
 
 module "private_dns_zone" {
