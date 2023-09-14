@@ -28,6 +28,44 @@ resource "azurerm_key_vault" "keyvault" {
  # secret_permissions = ["get","set"]                              # Permissions for secrets (Read & Set access).
 }
 
+resource "azurerm_key_vault_access_policy" "storage" {
+  key_vault_id = var.key_vault_id
+  tenant_id    = var.tenant_id
+  object_id    = var.object_id
+
+  secret_permissions = ["Get"]
+  key_permissions = [
+    "Get",
+    "UnwrapKey",
+    "WrapKey"
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "client" {
+  key_vault_id = var.key_vault_id
+  tenant_id    = var.tenant_id
+  object_id    = var.object_id
+
+  secret_permissions = ["Get"]
+  key_permissions = [
+    "Get",
+    "Create",
+    "Delete",
+    "List",
+    "Restore",
+    "Recover",
+    "UnwrapKey",
+    "WrapKey",
+    "Purge",
+    "Encrypt",
+    "Decrypt",
+    "Sign",
+    "Verify",
+    "GetRotationPolicy",
+    "SetRotationPolicy"
+  ]
+}
+
 # Generate a random password.
 resource "random_password" "random_password" {
   length           = 16
@@ -54,14 +92,27 @@ resource "azurerm_key_vault_secret" "password" {
 }
 
 resource "azurerm_key_vault_key" "keyvault_key" {
-  name         = var.keyvault_name                   # Name of the RSA key.
-  key_vault_id =  var.key_vault_id       # ID of the Azure Key Vault where the key will be stored.
+  name         = var.keyvault_key_name                   # Name of the RSA key.
+  key_vault_id = var.key_vault_id       # ID of the Azure Key Vault where the key will be stored.
 
   key_type     = "RSA"                               # Specify the key type as RSA.
   key_size     = 2048                                # Specify the key size (2048 bits).
 
+    key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey"
+  ]
+
+  depends_on = [
+    azurerm_key_vault_access_policy.client,
+    azurerm_key_vault_access_policy.storage
+  ]
+
   # Define the key options (operations allowed with this key).
-  key_opts     = ["decrypt", "encrypt", "sign", "verify"]
   # - "decrypt": Key can be used for decryption operations.
   # - "encrypt": Key can be used for encryption operations.
   # - "sign": Key can be used for signing data.

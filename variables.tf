@@ -14,6 +14,10 @@ variable "client_secret" {
 }
 
 # Azure Tenant ID.
+variable "object_id" {
+  description = "Azure object_id"
+}
+
 variable "tenant_id" {
   description = "Azure Tenant ID"
 }
@@ -82,8 +86,10 @@ variable "ip_configuration_name" {
 }
 
 variable "storage_account_name" {
-  description = "Name of the Azure Storage Account"
+  description = "Name of the Azure Storage Account for the backend."
+  type        = string
 }
+
 
 variable "private_dns_zone_name" {
   description = "Name of the Azure private_dns_zone_name"

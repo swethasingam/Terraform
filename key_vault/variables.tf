@@ -16,5 +16,13 @@ variable "tenant_id" {
 }
 
 variable "keyvault_name" {
-  description = "Name of the Azure Storage Account"
+  description = "Name of the Azure variable keyvault_name"
+}
+
+variable "object_id" {
+  description = "Name of the Azure object_id"
+}
+
+variable "keyvault_key_name" {
+  description = "Name of the Azure keyvault_key_name"
 }
