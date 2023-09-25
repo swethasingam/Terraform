@@ -1,5 +1,17 @@
+variable "tenant_id" {
+  description = "Azure Tenant ID"
+}
+
+variable "object_id" {
+  description = "Azure object_id"
+}
+
 variable "resource_group_name" {
   description = "Name of the Azure Resource Group"
+}
+
+variable "private_dns_zone_name" {
+  description = "Name of the Azure private_dns_zone_name"
 }
 
 variable "location" {
@@ -7,14 +19,6 @@ variable "location" {
   default = "eastus"
 }
 
-variable "host" {
-  description = "Azure azurerm_public_ip"
-}
-
-variable "identity_ids" {
-  description = "Name of the identity_ids"
-}
-
-variable "network_interface_ids" {
-  description = "Name of the network_interface_ids"
+variable "keyvault_key_name" {
+  description = "Name of the Azure Storage Account"
 }
